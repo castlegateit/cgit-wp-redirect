@@ -21,7 +21,6 @@ if (!defined('ABSPATH')) {
 define('CGIT_REDIRECT_PLUGIN', __FILE__);
 
 require_once __DIR__ . '/classes/autoload.php';
-require_once __DIR__ . '/functions.php';
 
 $plugin = new \Cgit\Redirect\Plugin;
 

@@ -94,7 +94,7 @@ class Plugin
     {
         return is_array($definition) &&
             isset($definition['from']) &&
-            isset($definition['to']));
+            isset($definition['to']);
     }
 
     /**
@@ -128,7 +128,7 @@ class Plugin
      */
     private function sanitizeRedirectRequest($key, $property)
     {
-        $url = $this->request[$key][$property];
+        $url = $this->redirects[$key][$property];
 
         // Unescape regular expression slashes
         if ($this->redirects[$key]['type'] == 'regex') {
@@ -213,17 +213,18 @@ class Plugin
             return;
         }
 
+
         $redirect = array_values($this->validRedirects)[0];
         $destination = $redirect['to'];
 
         // Regular expression match groups to emulate Apache's RewriteRule
         if ($redirect['type'] == 'regex' && $this->matches) {
-            foreach ($matches as $key => $match) {
+            foreach ($this->matches as $key => $match) {
                 if ($key === 0) {
                     continue;
                 }
 
-                str_replace(["\\$key", "\$$key", $match, $destination);
+                str_replace(["\\$key", "\$$key", $match, $destination]);
             }
         }
 
