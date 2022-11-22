@@ -56,8 +56,6 @@ class Plugin
         $this->sanitizeRedirectDefinitions();
         $this->validateRedirectDefinitions();
         $this->performRedirect();
-
-        // FIXME redirect if match???
     }
 
     /**
@@ -212,7 +210,6 @@ class Plugin
         if (!$this->validRedirects) {
             return;
         }
-
 
         $redirect = array_values($this->validRedirects)[0];
         $destination = $redirect['to'];
