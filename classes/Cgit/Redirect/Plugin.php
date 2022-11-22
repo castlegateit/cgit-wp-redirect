@@ -225,8 +225,45 @@ class Plugin
             }
         }
 
+        // Destination matches current URL? Do not redirect.
+        if (static::isCurrentUrl($destination)) {
+            return;
+        }
+
+        // Debug mode? Print destination instead of performing redirect.
+        if (defined('CGIT_REDIRECT_DEBUG') && CGIT_REDIRECT_PLUGIN) {
+            wp_die("Redirect to $destination");
+        }
+
+        // Redirect to destination URL.
         wp_redirect(home_url('/') . $destination);
 
         exit;
+    }
+
+    /**
+     * URL is current URL
+     *
+     * @param string $url
+     * @return bool
+     */
+    private static function isCurrentUrl(string $url): bool
+    {
+        $defaults = ['path' => '', 'query' => ''];
+
+        $src = array_merge($defaults, parse_url(trim($_SERVER['REQUEST_URI'], '/')));
+        $dst = array_merge(parse_url(trim($url, '/')));
+
+        if ($src['path'] !== $dst['path']) {
+            return false;
+        }
+
+        parse_str($src['query'], $src_args);
+        parse_str($dst['query'], $dst_args);
+
+        ksort($src_args);
+        ksort($dst_args);
+
+        return $src_args === $dst_args;
     }
 }

@@ -37,6 +37,10 @@ add_filter('cgit_redirects', function ($redirects) {
 
 Note that domains and leading and trailing spaces will be stripped from `to` and `from` definitions, so this plugin is only suitable for redirects within a WordPress site and not redirects to other domains.
 
+## Debugging
+
+If `CGIT_REDIRECT_DEBUG` is set to `true` in `wp-config.php`, redirects will be printed in the browser instead of being followed.
+
 ## License
 
 Released under the [MIT License](https://opensource.org/licenses/MIT). See [LICENSE](LICENSE) for details.
