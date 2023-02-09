@@ -5,7 +5,7 @@
 Plugin Name: Castlegate IT WP Redirect
 Plugin URI: https://github.com/castlegateit/cgit-wp-redirect
 Description: Basic URL redirects
-Version: 1.1.0
+Version: 1.1.2
 Author: Castlegate IT
 Author URI: https://www.castlegateit.co.uk/
 Network: true
