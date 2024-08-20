@@ -39,7 +39,7 @@ Note that domains and leading and trailing spaces will be stripped from `to` and
 
 ## Debugging
 
-If `CGIT_REDIRECT_DEBUG` is set to `true` in `wp-config.php`, redirects will be printed in the browser instead of being followed.
+If `CGIT_WP_REDIRECT_DEBUG` is set to `true` in `wp-config.php`, redirects will be printed in the browser instead of being followed.
 
 ## License
 

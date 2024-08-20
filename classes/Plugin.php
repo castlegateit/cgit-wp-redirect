@@ -1,45 +1,51 @@
 <?php
 
-namespace Cgit\Redirect;
+declare(strict_types=1);
 
-class Plugin
+namespace Castlegate\Redirect;
+
+use WP;
+
+final class Plugin
 {
     /**
      * Initial redirect definitions
      *
      * @var array
      */
-    private $redirects = [];
+    private array $redirects = [];
 
     /**
      * Request as parsed by WordPress
      *
      * @var string
      */
-    private $request = '';
+    private string $request = '';
 
     /**
      * Valid redirect definitions for this request
      *
      * @var array
      */
-    private $validRedirects = [];
+    private array $validRedirects = [];
 
     /**
      * Regular expression matches
      *
      * @var array
      */
-    private $matches = [];
+    private array $matches = [];
 
     /**
-     * Construct
+     * Initialization
      *
      * @return void
      */
-    public function __construct()
+    public static function init(): void
     {
-        add_action('parse_request', [$this, 'redirect']);
+        $plugin = new static();
+
+        add_action('parse_request', [$plugin, 'redirect']);
     }
 
     /**
@@ -48,7 +54,7 @@ class Plugin
      * @param WP $wp
      * @return void
      */
-    public function redirect($wp)
+    public function redirect(WP $wp): void
     {
         $this->redirects = apply_filters('cgit_redirects', $this->redirects);
         $this->request = $wp->request;
@@ -63,7 +69,7 @@ class Plugin
      *
      * @return void
      */
-    private function sanitizeRedirectDefinitions()
+    private function sanitizeRedirectDefinitions(): void
     {
         if (!$this->redirects) {
             return;
@@ -86,9 +92,9 @@ class Plugin
      * Is this a valid redirect definition?
      *
      * @param array $definition
-     * @return boolean
+     * @return bool
      */
-    private function isValidDefinition($definition)
+    private function isValidDefinition(array $definition): bool
     {
         return is_array($definition) &&
             isset($definition['from']) &&
@@ -98,10 +104,10 @@ class Plugin
     /**
      * Sanitize redirect from definition
      *
-     * @param integer $key
+     * @param int $key
      * @return void
      */
-    private function sanitizeRedirectFrom($key)
+    private function sanitizeRedirectFrom(int $key): void
     {
         $this->sanitizeRedirectRequest($key, 'from');
     }
@@ -109,10 +115,10 @@ class Plugin
     /**
      * Sanitize redirect to definition
      *
-     * @param integer $key
+     * @param int $key
      * @return void
      */
-    private function sanitizeRedirectTo($key)
+    private function sanitizeRedirectTo(int $key): void
     {
         $this->sanitizeRedirectRequest($key, 'to');
     }
@@ -120,11 +126,11 @@ class Plugin
     /**
      * Sanitize redirect request (from or to string)
      *
-     * @param integer $key
+     * @param int $key
      * @param string $property
      * @return void
      */
-    private function sanitizeRedirectRequest($key, $property)
+    private function sanitizeRedirectRequest(int $key, string $property): void
     {
         $url = $this->redirects[$key][$property];
 
@@ -164,10 +170,10 @@ class Plugin
     /**
      * Sanitize redirect type
      *
-     * @param integer $key
+     * @param int $key
      * @return void
      */
-    private function sanitizeRedirectType($key)
+    private function sanitizeRedirectType(int $key): void
     {
         if (isset($this->redirects[$key]['type'])) {
             return;
@@ -181,7 +187,7 @@ class Plugin
      *
      * @return void
      */
-    private function validateRedirectDefinitions()
+    private function validateRedirectDefinitions(): void
     {
         $this->validRedirects = array_filter($this->redirects, function ($redirect) {
             if ($redirect['type'] == 'exact') {
@@ -205,7 +211,7 @@ class Plugin
      *
      * @return void
      */
-    private function performRedirect()
+    private function performRedirect(): void
     {
         if (!$this->validRedirects) {
             return;
@@ -221,7 +227,7 @@ class Plugin
                     continue;
                 }
 
-                str_replace(["\\$key", "\$$key", $match, $destination]);
+                str_replace(["\\$key", "\$$key"], $match, $destination);
             }
         }
 
@@ -231,7 +237,7 @@ class Plugin
         }
 
         // Debug mode? Print destination instead of performing redirect.
-        if (defined('CGIT_REDIRECT_DEBUG') && CGIT_REDIRECT_PLUGIN) {
+        if (defined('CGIT_WP_REDIRECT_DEBUG') && CGIT_WP_REDIRECT_DEBUG) {
             wp_die("Redirect to $destination");
         }
 

@@ -1,0 +1,8 @@
+{
+    "name": "castlegate/cgit-wp-redirect",
+    "autoload": {
+        "psr-4": {
+            "Castlegate\\Redirect\\": "classes"
+        }
+    }
+}

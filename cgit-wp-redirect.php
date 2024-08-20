@@ -1,28 +1,27 @@
 <?php
 
-/*
+/**
+ * Plugin Name:  Castlegate IT WP Redirect
+ * Plugin URI:   https://github.com/castlegateit/cgit-wp-redirect
+ * Description:  Basic URL redirects.
+ * Version:      1.2.0
+ * Requires PHP: 8.2
+ * Author:       Castlegate IT
+ * Author URI:   https://www.castlegateit.co.uk/
+ * License:      MIT
+ * Update URI:   https://github.com/castlegateit/cgit-wp-redirect
+ */
 
-Plugin Name: Castlegate IT WP Redirect
-Plugin URI: https://github.com/castlegateit/cgit-wp-redirect
-Description: Basic URL redirects
-Version: 1.1.2
-Author: Castlegate IT
-Author URI: https://www.castlegateit.co.uk/
-Network: true
-
-Copyright (c) 2019 Castlegate IT. All rights reserved.
-
-*/
+use Castlegate\Redirect\Plugin;
 
 if (!defined('ABSPATH')) {
     wp_die('Access denied');
 }
 
-define('CGIT_REDIRECT_PLUGIN', __FILE__);
+define('CGIT_WP_REDIRECT_VERSION', '1.2.0');
+define('CGIT_WP_REDIRECT_PLUGIN_FILE', __FILE__);
+define('CGIT_WP_REDIRECT_PLUGIN_DIR', __DIR__);
 
-require_once __DIR__ . '/classes/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-$plugin = new \Cgit\Redirect\Plugin;
-
-do_action('cgit_redirect_plugin', $plugin);
-do_action('cgit_redirect_loaded');
+Plugin::init();
