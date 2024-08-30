@@ -264,8 +264,8 @@ final class Plugin
             return false;
         }
 
-        parse_str($src['query'], $src_args);
-        parse_str($dst['query'], $dst_args);
+        parse_str($src['query'] ?? '', $src_args);
+        parse_str($dst['query'] ?? '', $dst_args);
 
         ksort($src_args);
         ksort($dst_args);
